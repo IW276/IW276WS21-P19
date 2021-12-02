@@ -2,6 +2,7 @@ import argparse
 from .dir_iterator_stage import DirIteratorStage
 from .print_stage import PrintStage
 from .pipeline import Pipeline
+from .ocr_stage import OCRStage
 
 
 def run():
@@ -17,6 +18,7 @@ def run():
         DirIteratorStage(allowed_extensions=[
             ".jpg", ".jpeg", ".png"
         ]),
+        OCRStage(),
         PrintStage()
     ])
 
