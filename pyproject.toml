@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ocr-attribute-extraction"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.9"
+tesserocr = "^2.5.2"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+oae = "ocr_attribute_extraction.cli:run"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

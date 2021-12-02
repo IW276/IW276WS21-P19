@@ -1,0 +1,17 @@
+[[package]]
+name = "tesserocr"
+version = "2.5.2"
+description = "A simple, Pillow-friendly, Python wrapper around tesseract-ocr API using Cython"
+category = "main"
+optional = false
+python-versions = "*"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.9"
+content-hash = "51192552608c8f3290efaf1c01ed968928f18018b943d9d48d0fa55ffd1bd1e1"
+
+[metadata.files]
+tesserocr = [
+    {file = "tesserocr-2.5.2.tar.gz", hash = "sha256:9371dd3f6fe3238039c73bfe15bcaf21389f7e75f62bd530a30110149f39b2ae"},
+]
