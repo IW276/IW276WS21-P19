@@ -3,6 +3,7 @@ from .dir_iterator_stage import DirIteratorStage
 from .print_stage import PrintStage
 from .pipeline import Pipeline
 from .ocr_stage import OCRStage
+from .simple_attribute_extraction_stage import SimpleAttributeExtractionStage
 
 
 def run():
@@ -19,6 +20,7 @@ def run():
             ".jpg", ".jpeg", ".png"
         ]),
         OCRStage(),
+        SimpleAttributeExtractionStage(),
         PrintStage()
     ])
 
