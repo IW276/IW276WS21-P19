@@ -4,6 +4,7 @@ from .print_stage import PrintStage
 from .pipeline import Pipeline
 from .ocr_stage import OCRStage
 from .simple_attribute_extraction_stage import SimpleAttributeExtractionStage
+from .advanced_attribute_extraction_stage import AdvancedAttributeExtractionStage
 
 
 def run():
@@ -21,6 +22,7 @@ def run():
         ]),
         OCRStage(),
         SimpleAttributeExtractionStage(),
+        AdvancedAttributeExtractionStage(),
         PrintStage()
     ])
 
