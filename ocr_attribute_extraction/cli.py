@@ -5,6 +5,7 @@ from .pipeline import Pipeline
 from .ocr_stage import OCRStage
 from .simple_attribute_extraction_stage import SimpleAttributeExtractionStage
 from .advanced_attribute_extraction_stage import AdvancedAttributeExtractionStage
+from .spell_correction_stage import TextSpellCorrectionStage
 
 
 def run():
@@ -21,6 +22,7 @@ def run():
             ".jpg", ".jpeg", ".png"
         ]),
         OCRStage(),
+        TextSpellCorrectionStage(),
         SimpleAttributeExtractionStage(),
         AdvancedAttributeExtractionStage(),
         PrintStage()

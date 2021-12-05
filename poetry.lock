@@ -191,6 +191,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "textblob"
+version = "0.17.1"
+description = "Simple, Pythonic text processing. Sentiment analysis, part-of-speech tagging, noun phrase parsing, and more."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+nltk = {version = ">=3.1", markers = "python_version >= \"3\""}
+
+[[package]]
 name = "torch"
 version = "1.10.0"
 description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
@@ -254,7 +265,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "de9715c18ee049c7fc7ce7f8baf91dfa8e44330309942f0c4015fc5375d68235"
+content-hash = "402bed3556c31427637c8a39106c9c62abaeea40529cd5f9fe5469992c722c9e"
 
 [metadata.files]
 certifi = [
@@ -448,6 +459,10 @@ stanza = [
 ]
 tesserocr = [
     {file = "tesserocr-2.5.2.tar.gz", hash = "sha256:9371dd3f6fe3238039c73bfe15bcaf21389f7e75f62bd530a30110149f39b2ae"},
+]
+textblob = [
+    {file = "textblob-0.17.1-py2.py3-none-any.whl", hash = "sha256:15546d7f309e96a3f542bee42751c8e5ce4d519d3d274ee79df2318141f0b788"},
+    {file = "textblob-0.17.1.tar.gz", hash = "sha256:8dc0875dfab1eaf0dc772a9dbc4afaa9ca93d0e35cd62cb792f3a38e067ab68f"},
 ]
 torch = [
     {file = "torch-1.10.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:56022b0ce94c54e95a2f63fc5a1494feb1fc3d5c7a9b35a62944651d03edef05"},
