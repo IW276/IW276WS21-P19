@@ -8,14 +8,14 @@ class SimpleAttributeExtractor:
         self.word_sequence = word_sequence
         self.words_matched = 0
 
-        self.document.attributes[self.attribute_name.value] = False
+        self.document.attributes[self.attribute_name.value] = 0
 
     def process_word(self, word):
         if len(self.word_sequence) > 0 and word in self.word_sequence[self.words_matched]:
             self.words_matched += 1
 
             if self.words_matched == len(self.word_sequence):
-                self.document.attributes[self.attribute_name.value] = True
+                self.document.attributes[self.attribute_name.value] = 1
                 self.words_matched = 0
         else:
             self.words_matched = 0
