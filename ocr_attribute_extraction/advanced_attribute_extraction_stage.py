@@ -61,7 +61,7 @@ class AdvancedAttributeExtractionStage:
             for word in featureList:
                 filist = []
                 for j in dep_node:
-                    if ((j[0] == word[0] or j[1] == word[0]) and j[2] == "amod"):
+                    if ((j[0] == word[0] or j[1] == word[0]) and j[2] in ["amod", "nsubj"]):
                         if (j[0] == word[0]):
                             filist.append(j[1])
                         else:
