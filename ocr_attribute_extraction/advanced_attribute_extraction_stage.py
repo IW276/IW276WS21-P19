@@ -77,9 +77,10 @@ class AdvancedAttributeExtractionStage:
                     final_cluster.append(word)
 
         for name in AttributeName:
-            document.attributes[name] = -1
+            document.attributes[name.value] = -1
 
-        document.attributes[AttributeName.Gender_Female] = is_female(pronouns)
+        document.attributes[AttributeName.Gender_Female.value] = is_female(
+            pronouns)
         parse_attributes(final_cluster, document)
 
         return [document]
@@ -104,7 +105,7 @@ def parse_attributes(dep_list: array, document: document.Document):
         parse_body_part(word, Part.UpperBody, document)
         parse_body_part(word, Part.LowerBody, document)
         if word[0] in attribute_keyword_lookup[Part.Backpack.value]:
-            document.attributes[AttributeName.Accessory_Backpack] = 1
+            document.attributes[AttributeName.Accessory_Backpack.value] = 1
 
 
 def parse_body_part(word, part: Part, document: document.Document):
@@ -124,9 +125,9 @@ def parse_body_part(word, part: Part, document: document.Document):
 
     # Does the clothing already imply length?
     if object_word in attribute_keyword_lookup["Length_Short"]:
-        document.attributes[attribute_short] = 1
+        document.attributes[attribute_short.value] = 1
     if object_word in attribute_keyword_lookup["Length_Long"]:
-        document.attributes[attribute_short] = 0
+        document.attributes[attribute_short.value] = 0
 
     # Do the word dependencies imply color or length?
     if object_word in attribute_keyword_lookup[part.value]:
@@ -135,10 +136,10 @@ def parse_body_part(word, part: Part, document: document.Document):
             for part, color in part_to_color.items():
                 if attribute in attribute_keyword_lookup[color.value]:
                     colors_found += 1
-                    document.attributes[part] = 1
+                    document.attributes[part.value] = 1
             if attribute in attribute_keyword_lookup["Length_Short"]:
-                document.attributes[attribute_short] = 1
+                document.attributes[attribute_short.value] = 1
             elif attribute in attribute_keyword_lookup["Length_Long"]:
-                document.attributes[attribute_short] = 0
+                document.attributes[attribute_short.value] = 0
         if colors_found > 1:
-            document.attributes[attribute_color_mixture] = 1
+            document.attributes[attribute_color_mixture.value] = 1
