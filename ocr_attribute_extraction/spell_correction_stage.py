@@ -1,9 +1,23 @@
-# import TextBlob
-from textblob import TextBlob
+import re
 
 
-class TextSpellCorrectionStage:  # 70% accuracy, ref.: https://textblob.readthedocs.io/en/dev/quickstart.html
+class TextSpellCorrectionStage:
     def process(self, document):
-        textblob = TextBlob(document.text)
-        document.text = textblob.correct().raw
+        # Replace all newlines with spaces"
+        processed = document.text.replace(
+            "\r", " ").replace("\n", " ")
+
+        # Remove abnormal characters
+        processed = processed.replace("|", "I")
+        processed = re.sub("[^A-Za-z0-9 .,\-%:]+", " ", processed)
+
+        # Fix spaces around punctuation
+        processed = processed.replace(',', ', ').replace(
+            ' ,', ',').replace(' .', '.')
+
+        # Remove duplicate spaces and dots
+        processed = re.sub("\.(\.+)", " ", processed)
+        processed = re.sub("  +", " ", processed)
+
+        document.text = processed
         return [document]
