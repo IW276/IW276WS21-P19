@@ -18,3 +18,10 @@ class Document:
             f"text:\n{textwrap.indent(self.text, '  ')}\n"
             f"attributes:\n{textwrap.indent(attributes_serialized, '  ')}"
         )
+
+    def toJson(self):
+        attributes_serialized = "\n".join([
+            f"\t\"{k}\": {v},"
+            for k, v in self.attributes.items()
+        ])
+        return '{\n' + attributes_serialized[:-1] + '\n}\n'

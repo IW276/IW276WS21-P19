@@ -1,5 +1,7 @@
 import argparse
+
 from .dir_iterator_stage import DirIteratorStage
+from .json_output_stage import JsonOutputStage
 from .print_stage import PrintStage
 from .pipeline import Pipeline
 from .ocr_stage import OCRStage
@@ -25,7 +27,8 @@ def run():
         TextSpellCorrectionStage(),
         SimpleAttributeExtractionStage(),
         AdvancedAttributeExtractionStage(),
-        PrintStage()
+        JsonOutputStage(),
+        PrintStage(),
     ])
 
     pipeline.run(args.input_paths)
