@@ -94,13 +94,13 @@ class Part(Enum):
 
 
 attribute_keyword_lookup = {
-    "Gender_Female": ["she", "her", "women", "girl"],
-    "Gender_Male": ["he", "male", 'man'],
-    Part.UpperBody.value: ['suit', "shirt", "t-shirt", "top"],
-    Part.LowerBody.value: ['jeans', 'pant', 'pants', 'trousers', 'shorts'],
-    Part.Backpack.value: ['backpack', 'bag'],
-    "Length_Short": ['short', 'shorts', "shirt", "t-shirt", 'sleeveless'],
-    "Length_Long": ['long', 'sleeves', 'trousers'],
+    "Gender_Female": ["she", "her", "women", "girl", "lady", "female", "dame", "bimbo", "chick", "baroness", "contessa", "mother", "mistress"],
+    "Gender_Male": ["he", "him", "male", 'man', "guy", "boy", "dude", "fellow", "gentleman", "lad"],
+    Part.UpperBody.value: ['suit', "shirt", "t-shirt", "top", "blouse", "jacket", "hoodie", "blazer", "sweater", "jumper", "vest", "coat", "raincoat", "sweatshirt", "swimsuit", "pullover", "dress"],
+    Part.LowerBody.value: ['jeans', 'pant', 'pants', 'trousers', 'shorts', "skirt", "sweatpants", "slacks", "pantyhose", "leggings"],
+    Part.Backpack.value: ['backpack', 'bag', "pack", "pounch", "haversack", "rucksack", "briefcase", "baggage", "handbag", "packsack"],
+    "Length_Short": ['short', 'shorts', "shirt", "t-shirt", 'sleeveless', "skirt", "top", "blouse", "vest"],
+    "Length_Long": ['long', 'sleeves', 'trousers', "jeans", "pant", "pants", "sweatpants", "pantyhose", "blazer", "leggings", "jacket", "hoodie", "raincoat", "sweatshirt", "pullover"],
     Colors.Black.value: ["black", "dark"],
     Colors.Blue.value: ["blue"],
     Colors.Brown.value: ["brown"],
