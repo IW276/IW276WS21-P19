@@ -1,14 +1,9 @@
 from numpy.core.records import array
 
 from ocr_attribute_extraction import document
-from .attribute_name import Colors, Part, attribute_keyword_lookup, upper_body_part_to_color, lower_body_part_to_color, AttributeName
+from .attribute_name import Part, attribute_keyword_lookup, upper_body_part_to_color, lower_body_part_to_color, AttributeName
 
 import stanza
-from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.tokenize import word_tokenize, sent_tokenize
-from nltk.corpus import wordnet
-from nltk.corpus import stopwords
-import numpy as np
 import nltk
 
 nltk.download('punkt')
