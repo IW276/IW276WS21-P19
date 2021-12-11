@@ -1,15 +1,16 @@
 from numpy.core.records import array
-from stanza.resources.common import download
 
-from ocr_attribute_extraction import document
+from .document import Document
+from .stage import Stage
 from .attribute_name import Part, attribute_keyword_lookup, upper_body_part_to_color, lower_body_part_to_color, AttributeName
 
 import stanza
 import nltk
 
 
-class AdvancedAttributeExtractionStage:
+class AdvancedAttributeExtractionStage(Stage):
     def __init__(self, language, download_models):
+        Stage.__init__(self)
         self.language = language
 
         if download_models:
@@ -76,9 +77,6 @@ class AdvancedAttributeExtractionStage:
                 if (word not in final_cluster):
                     final_cluster.append(word)
 
-        for name in AttributeName:
-            document.attributes[name.value] = -1
-
         document.attributes[AttributeName.Gender_Female.value] = is_female(
             pronouns)
         parse_attributes(final_cluster, document)
@@ -99,16 +97,15 @@ def is_female(pronoun_list: array):
         return -1
 
 
-def parse_attributes(dep_list: array, document: document.Document):
+def parse_attributes(dep_list: array, document: Document):
     for word in dep_list:
-        print(word)
         parse_body_part(word, Part.UpperBody, document)
         parse_body_part(word, Part.LowerBody, document)
         if word[0] in attribute_keyword_lookup[Part.Backpack.value]:
             document.attributes[AttributeName.Accessory_Backpack.value] = 1
 
 
-def parse_body_part(word, part: Part, document: document.Document):
+def parse_body_part(word, part: Part, document: Document):
     attribute_keyword_lookup
     object_word = word[0]
     attributes = word[1]

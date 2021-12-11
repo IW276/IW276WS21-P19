@@ -1,7 +1,12 @@
 import re
 
+from .stage import Stage
 
-class TextSpellCorrectionStage:
+
+class TextSpellCorrectionStage(Stage):
+    def __init__(self):
+        Stage.__init__(self)
+
     def process(self, document):
         # Replace all newlines with spaces"
         processed = document.text.replace(

@@ -1,4 +1,5 @@
 import textwrap
+from .attribute_name import AttributeName
 
 
 class Document:
@@ -6,6 +7,9 @@ class Document:
         self.path = path
         self.text = None
         self.attributes = {}
+
+        for name in AttributeName:
+            self.attributes[name.value] = -1
 
     def __str__(self):
         attributes_serialized = "\n".join([
@@ -18,10 +22,3 @@ class Document:
             f"text:\n{textwrap.indent(self.text, '  ')}\n"
             f"attributes:\n{textwrap.indent(attributes_serialized, '  ')}"
         )
-
-    def toJson(self):
-        attributes_serialized = "\n".join([
-            f"\t\"{k}\": {v},"
-            for k, v in self.attributes.items()
-        ])
-        return '{\n' + attributes_serialized[:-1] + '\n}\n'

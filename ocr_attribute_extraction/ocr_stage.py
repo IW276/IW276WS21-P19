@@ -1,7 +1,12 @@
 from tesserocr import PyTessBaseAPI
 
+from .stage import Stage
 
-class OCRStage:
+
+class OCRStage(Stage):
+    def __init__(self):
+        Stage.__init__(self)
+
     def process(self, document):
         with PyTessBaseAPI() as api:
             api.SetImageFile(document.path)

@@ -9,7 +9,7 @@
       "type": "python",
       "request": "launch",
       "module": "ocr_attribute_extraction",
-      "args": ["datasets/test-input-data"]
+      "args": ["--skip-download-models", "datasets/test-input-data"]
     }
   ]
 }

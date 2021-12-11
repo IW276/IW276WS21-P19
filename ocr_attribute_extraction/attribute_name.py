@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum
 
 
 class Colors(Enum):
@@ -112,6 +112,6 @@ attribute_keyword_lookup = {
     Colors.Red.value: ["red"],
     Colors.White.value: ["white", "light"],
     Colors.Yellow.value: ["yellow"],
-    Colors.Mixture.value: ["mixture"],
-    Colors.Other.value: ["other", "rainbow"],
+    Colors.Mixture.value: ["mixture", "colorfull", "colored", "rainbow"],
+    Colors.Other.value: ["other"],
 }
