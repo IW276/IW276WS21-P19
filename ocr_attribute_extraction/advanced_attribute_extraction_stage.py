@@ -1,4 +1,5 @@
 from numpy.core.records import array
+from stanza.resources.common import download
 
 from ocr_attribute_extraction import document
 from .attribute_name import Part, attribute_keyword_lookup, upper_body_part_to_color, lower_body_part_to_color, AttributeName
@@ -6,14 +7,16 @@ from .attribute_name import Part, attribute_keyword_lookup, upper_body_part_to_c
 import stanza
 import nltk
 
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
-
 
 class AdvancedAttributeExtractionStage:
-    def __init__(self, language):
+    def __init__(self, language, download_models):
         self.language = language
-        stanza.download(self.language)
+
+        if download_models:
+            stanza.download(self.language)
+            nltk.download('punkt')
+            nltk.download('averaged_perceptron_tagger')
+
         self.stanza_pipeline = stanza.Pipeline(self.language)
 
     def process(self, document):

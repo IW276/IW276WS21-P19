@@ -24,6 +24,19 @@ def run():
         choices=['en', 'de'],
         default='en',
     )
+    download_models_parser = parser.add_mutually_exclusive_group(
+        required=False)
+    download_models_parser.add_argument(
+        '--download-models',
+        dest='download_models',
+        action='store_true'
+    )
+    download_models_parser.add_argument(
+        '--skip-download-models',
+        dest='download_models',
+        action='store_false'
+    )
+    parser.set_defaults(download_models=True)
     args = parser.parse_args()
 
     pipeline = Pipeline(stages=[
@@ -33,7 +46,10 @@ def run():
         OCRStage(),
         TextSpellCorrectionStage(),
         SimpleAttributeExtractionStage(language=args.language),
-        AdvancedAttributeExtractionStage(language=args.language),
+        AdvancedAttributeExtractionStage(
+            language=args.language,
+            download_models=args.download_models
+        ),
         JsonOutputStage(),
         PrintStage(),
     ])
