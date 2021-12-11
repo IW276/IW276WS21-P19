@@ -14,8 +14,15 @@ def run():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'input_paths',
+        metavar='DIRECTORY',
         type=str,
         nargs='+',
+    )
+    parser.add_argument(
+        '--language',
+        type=str,
+        choices=['en', 'de'],
+        default='en',
     )
     args = parser.parse_args()
 
@@ -25,8 +32,8 @@ def run():
         ]),
         OCRStage(),
         TextSpellCorrectionStage(),
-        SimpleAttributeExtractionStage(),
-        AdvancedAttributeExtractionStage(),
+        SimpleAttributeExtractionStage(language=args.language),
+        AdvancedAttributeExtractionStage(language=args.language),
         JsonOutputStage(),
         PrintStage(),
     ])

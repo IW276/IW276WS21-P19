@@ -13,14 +13,16 @@ import nltk
 
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
-stanza.download('en')
-stanza_pipeline = stanza.Pipeline('en')
 
 
 class AdvancedAttributeExtractionStage:
+    def __init__(self, language):
+        self.language = language
+        stanza.download(self.language)
+        self.stanza_pipeline = stanza.Pipeline(self.language)
+
     def process(self, document):
         text = document.text
-
         # Splitting the text into sentences
         sentences = nltk.sent_tokenize(text.lower())
 
@@ -38,7 +40,7 @@ class AdvancedAttributeExtractionStage:
             tagged_words = nltk.pos_tag(word_list)
 
             # Use stanza to find word dependencies
-            doc = stanza_pipeline(sentence)
+            doc = self.stanza_pipeline(sentence)
             dep_node = []
             for dep_edge in doc.sentences[0].dependencies:
                 dep_node.append(

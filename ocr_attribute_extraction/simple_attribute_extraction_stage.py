@@ -1,4 +1,4 @@
-from .attribute_name import AttributeName
+from .attribute_name import AttributeName, Colors, attribute_keyword_lookup, upper_body_part_to_color, lower_body_part_to_color
 
 
 class SimpleAttributeExtractor:
@@ -26,6 +26,9 @@ pants_synonyms = ["pants", "jeans", "trousers"]
 
 
 class SimpleAttributeExtractionStage:
+    def __init__(self, language):
+        self.language = language
+
     def process(self, document):
         text_lower = document.text.lower()
         words = text_lower.split()
