@@ -6,10 +6,7 @@ class Document:
     def __init__(self, path):
         self.path = path
         self.text = None
-        self.attributes = {}
-
-        for name in AttributeName:
-            self.attributes[name.value] = -1
+        self.attributes = {name.value: -1 for name in AttributeName}
 
     def __str__(self):
         attributes_serialized = "\n".join([
