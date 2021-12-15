@@ -32,7 +32,6 @@ RUN apt-get update \
     libtesseract-dev \
     libleptonica-dev
 
-COPY --from=builder /root/nltk_data /root/nltk_data
 COPY --from=builder /root/stanza_resources /root/stanza_resources
 
 COPY --from=builder /usr/src/app/dist/*.whl /tmp

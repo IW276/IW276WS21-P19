@@ -1,142 +1,113 @@
-from numpy.core.records import array
-
 from .document import Document
 from .stage import Stage
-from .attribute_name import Part, attribute_keyword_lookup, upper_body_part_to_color, lower_body_part_to_color, AttributeName
+from .attribute_name import Colors, Part, attribute_keyword_lookup, upper_body_part_to_color, lower_body_part_to_color, AttributeName
 
 import stanza
-import nltk
 
 
 class AdvancedAttributeExtractionStage(Stage):
     def __init__(self, language, download_models):
         Stage.__init__(self)
-        self.language = language
+        self.keyword_lookup = attribute_keyword_lookup[language]
 
         if download_models:
-            stanza.download(self.language)
-            nltk.download('punkt')
-            nltk.download('averaged_perceptron_tagger')
+            stanza.download(language)
 
-        self.stanza_pipeline = stanza.Pipeline(self.language)
+        self.stanza_pipeline = stanza.Pipeline(
+            # Language specific model
+            lang=language,
+            # multi-word-token expansion, part-of-speech tags, lemmatization, dependency parsing
+            # Comparing lemma with keywords might give better results
+            processors='tokenize,mwt,pos,lemma,depparse'
+        )
 
     def process(self, document):
-        text = document.text
-        # Splitting the text into sentences
-        sentences = nltk.sent_tokenize(text.lower())
+        gender_indicator_male = 0
+        gender_indicator_female = 0
+        colors_found = {
+            Part.UpperBody.value: 0,
+            Part.LowerBody.value: 0,
+        }
 
-        fcluster = []
-        total_feature_list = []
-        final_cluster = []
-        dic = {}
+        # Run stanza pipeline on document text
+        doc = self.stanza_pipeline(document.text)
 
-        pronouns = []
+        for sentence in doc.sentences:
+            for dependency_node in sentence.dependencies:
+                if dependency_node[1] in ['amod', 'nsubj']:
+                    # Does one of the two words indicate body part? If so, check the dependency for attributes
+                    if self.isBodyPart(dependency_node[0], Part.UpperBody):
+                        self.parseDependency(dependency_node[0],
+                                             dependency_node[2], Part.UpperBody, document, colors_found)
+                    elif self.isBodyPart(dependency_node[0], Part.LowerBody):
+                        self.parseDependency(dependency_node[0],
+                                             dependency_node[2], Part.LowerBody, document, colors_found)
+                    elif self.isBodyPart(dependency_node[2], Part.UpperBody):
+                        self.parseDependency(dependency_node[2],
+                                             dependency_node[0], Part.UpperBody, document, colors_found)
+                    elif self.isBodyPart(dependency_node[2], Part.LowerBody):
+                        self.parseDependency(dependency_node[2],
+                                             dependency_node[0], Part.LowerBody, document, colors_found)
 
-        for sentence in sentences:
-            word_list = nltk.word_tokenize(sentence)  # Splitting up into words
+            for word in sentence.words:
+                if word.upos in ['NOUN']:
+                    # Does word indicate backpack?
+                    if word.text.lower() in self.keyword_lookup[Part.Backpack.value]:
+                        document.attributes[AttributeName.Accessory_Backpack.value] = 1
 
-            # Part-of-Speech Tagging to each word
-            tagged_words = nltk.pos_tag(word_list)
+                    # Does word indicate person gender?
+                    if self.isWordContained(word, self.keyword_lookup['Gender_Female']):
+                        gender_indicator_female += 1
+                    elif self.isWordContained(word, self.keyword_lookup['Gender_Male']):
+                        gender_indicator_male += 1
 
-            # Use stanza to find word dependencies
-            doc = self.stanza_pipeline(sentence)
-            dep_node = []
-            for dep_edge in doc.sentences[0].dependencies:
-                dep_node.append(
-                    [dep_edge[2].text, dep_edge[0].id, dep_edge[1]])
-            for i in range(len(dep_node)):
-                if (int(dep_node[i][1]) != 0):
-                    dep_node[i][1] = word_list[(int(dep_node[i][1]) - 1)]
+                # Parse gender attributed to persons
+                if word.upos in ['PRON', 'DET', 'AUX']:
+                    if 'Person' in word.feats:
+                        if 'Gender=Masc' in word.feats:
+                            gender_indicator_male += 1
+                        elif 'Gender=Fem' in word.feats:
+                            gender_indicator_female += 1
 
-            featureList = []
-            categories = []
-            for word in tagged_words:
-                if (word[1] in ['NN', 'PRP', 'PRP$']):
-                    pronouns.append(word)
-                if (word[1] in ['JJ', 'NN', 'NNS']):
-                    featureList.append(word)
-                    # This list will store all the features for every sentence
-                    total_feature_list.append(list(word))
-                    categories.append(word[0])
+        if gender_indicator_female > gender_indicator_male:
+            document.attributes[AttributeName.Gender_Female.value] = 1
+        elif gender_indicator_male > gender_indicator_female:
+            document.attributes[AttributeName.Gender_Female.value] = 0
 
-            for word in featureList:
-                filist = []
-                for j in dep_node:
-                    if ((j[0] == word[0] or j[1] == word[0]) and j[2] in ["amod", "nsubj"]):
-                        if (j[0] == word[0]):
-                            filist.append(j[1])
-                        else:
-                            filist.append(j[0])
-                fcluster.append([word[0], filist])
-
-        for word in total_feature_list:
-            dic[word[0]] = word[1]
-
-        for word in fcluster:
-            if (dic[word[0]] == "NN" or dic[word[0]] == "NNS"):
-                if (word not in final_cluster):
-                    final_cluster.append(word)
-
-        document.attributes[AttributeName.Gender_Female.value] = is_female(
-            pronouns)
-        parse_attributes(final_cluster, document)
+        if colors_found[Part.UpperBody.value] > 1:
+            document.attributes[AttributeName.UpperBody_Color_Mixture] = 1
+        if colors_found[Part.LowerBody.value] > 1:
+            document.attributes[AttributeName.LowerBody_Color_Mixture] = 1
 
         return [document]
 
+    def isBodyPart(self, word, part: Part):
+        return self.isWordContained(word, self.keyword_lookup[part.value])
 
-def is_female(pronoun_list: array):
-    indicate_male = 0
-    indicate_female = 0
-    for pronoun in pronoun_list:
-        if pronoun[0] in attribute_keyword_lookup["Gender_Male"]:
-            indicate_male += 1
-        if pronoun[0] in attribute_keyword_lookup["Gender_Female"]:
-            indicate_female += 1
-        if indicate_female + indicate_male > 0:
-            return int(indicate_female > indicate_male)
-        return -1
+    def isWordContained(self, word, lookup):
+        return word.text.lower() in lookup or word.lemma.lower() in lookup
 
+    # Extract length and color if possible
+    def parseDependency(self, word, dependency, part: Part, document: Document, colors_found: dict):
+        if part == Part.UpperBody:
+            part_to_color = upper_body_part_to_color
+            attribute_short = AttributeName.UpperBody_Length_Short
+        elif part == Part.LowerBody:
+            part_to_color = lower_body_part_to_color
+            attribute_short = AttributeName.LowerBody_Length_Short
 
-def parse_attributes(dep_list: array, document: Document):
-    for word in dep_list:
-        parse_body_part(word, Part.UpperBody, document)
-        parse_body_part(word, Part.LowerBody, document)
-        if word[0] in attribute_keyword_lookup[Part.Backpack.value]:
-            document.attributes[AttributeName.Accessory_Backpack.value] = 1
+        # Does the word itself already imply length?
+        if self.isWordContained(word, self.keyword_lookup["Length_Short"]):
+            document.attributes[attribute_short.value] = 1
+        if self.isWordContained(word, self.keyword_lookup["Length_Long"]):
+            document.attributes[attribute_short.value] = 0
 
-
-def parse_body_part(word, part: Part, document: Document):
-    attribute_keyword_lookup
-    object_word = word[0]
-    attributes = word[1]
-    if part == Part.UpperBody:
-        part_to_color = upper_body_part_to_color
-        attribute_short = AttributeName.UpperBody_Length_Short
-        attribute_color_mixture = AttributeName.UpperBody_Color_Mixture
-    elif part == Part.LowerBody:
-        part_to_color = lower_body_part_to_color
-        attribute_short = AttributeName.LowerBody_Length_Short
-        attribute_color_mixture = AttributeName.LowerBody_Color_Mixture
-    else:
-        return
-
-    # Does the clothing already imply length?
-    if object_word in attribute_keyword_lookup["Length_Short"]:
-        document.attributes[attribute_short.value] = 1
-    if object_word in attribute_keyword_lookup["Length_Long"]:
-        document.attributes[attribute_short.value] = 0
-
-    # Do the word dependencies imply color or length?
-    if object_word in attribute_keyword_lookup[part.value]:
-        colors_found = 0
-        for attribute in attributes:
-            for part, color in part_to_color.items():
-                if attribute in attribute_keyword_lookup[color.value]:
-                    colors_found += 1
-                    document.attributes[part.value] = 1
-            if attribute in attribute_keyword_lookup["Length_Short"]:
-                document.attributes[attribute_short.value] = 1
-            elif attribute in attribute_keyword_lookup["Length_Long"]:
-                document.attributes[attribute_short.value] = 0
-        if colors_found > 1:
-            document.attributes[attribute_color_mixture.value] = 1
+        # Do the word dependencies imply color or length?
+        if self.isWordContained(dependency, self.keyword_lookup["Length_Short"]):
+            document.attributes[attribute_short.value] = 1
+        if self.isWordContained(dependency, self.keyword_lookup["Length_Long"]):
+            document.attributes[attribute_short.value] = 0
+        for colored_part, color in part_to_color.items():
+            if self.isWordContained(dependency, self.keyword_lookup[color.value]):
+                colors_found[part.value] += 1
+                document.attributes[colored_part.value] = 1

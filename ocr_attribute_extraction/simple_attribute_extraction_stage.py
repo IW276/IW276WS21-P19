@@ -31,6 +31,7 @@ class SimpleAttributeExtractionStage(Stage):
     def __init__(self, language):
         Stage.__init__(self)
         self.language = language
+        self.keyword_lookup = attribute_keyword_lookup[language]
 
     def process(self, document):
         text_lower = document.text.lower()
@@ -50,12 +51,12 @@ class SimpleAttributeExtractionStage(Stage):
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.Gender_Female,
-                word_sequence=[attribute_keyword_lookup["Gender_Female"]]
+                word_sequence=[self.keyword_lookup["Gender_Female"]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.Gender_Female,
-                word_sequence=[attribute_keyword_lookup["Gender_Male"]],
+                word_sequence=[self.keyword_lookup["Gender_Male"]],
                 match_value=0
             ),
             # top length
@@ -68,80 +69,80 @@ class SimpleAttributeExtractionStage(Stage):
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Black,
-                word_sequence=[attribute_keyword_lookup[Colors.Black.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Black.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Blue,
-                word_sequence=[attribute_keyword_lookup[Colors.Blue.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Blue.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Brown,
-                word_sequence=[attribute_keyword_lookup[Colors.Brown.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Brown.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Green,
-                word_sequence=[attribute_keyword_lookup[Colors.Green.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Green.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Grey,
-                word_sequence=[attribute_keyword_lookup[Colors.Grey.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Grey.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Orange,
-                word_sequence=[attribute_keyword_lookup[Colors.Orange.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Orange.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Pink,
-                word_sequence=[attribute_keyword_lookup[Colors.Pink.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Pink.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Purple,
-                word_sequence=[attribute_keyword_lookup[Colors.Purple.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Purple.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Red,
-                word_sequence=[attribute_keyword_lookup[Colors.Red.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Red.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_White,
-                word_sequence=[attribute_keyword_lookup[Colors.White.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.White.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Yellow,
-                word_sequence=[attribute_keyword_lookup[Colors.Yellow.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Yellow.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Mixture,
-                word_sequence=[attribute_keyword_lookup[Colors.Mixture.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Mixture.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.UpperBody_Color_Other,
-                word_sequence=[attribute_keyword_lookup[Colors.Other.value],
-                               attribute_keyword_lookup[Part.UpperBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Other.value],
+                               self.keyword_lookup[Part.UpperBody.value]]
             ),
             # pants length
             SimpleAttributeExtractor(
@@ -153,91 +154,91 @@ class SimpleAttributeExtractionStage(Stage):
                 document=document,
                 attribute_name=AttributeName.LowerBody_Length_Short,
                 word_sequence=[["short"],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             # pants color
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Black,
-                word_sequence=[attribute_keyword_lookup[Colors.Black.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Black.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Blue,
-                word_sequence=[attribute_keyword_lookup[Colors.Blue.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Blue.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Brown,
-                word_sequence=[attribute_keyword_lookup[Colors.Brown.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Brown.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Green,
-                word_sequence=[attribute_keyword_lookup[Colors.Green.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Green.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Grey,
-                word_sequence=[attribute_keyword_lookup[Colors.Grey.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Grey.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Orange,
-                word_sequence=[attribute_keyword_lookup[Colors.Orange.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Orange.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Pink,
-                word_sequence=[attribute_keyword_lookup[Colors.Pink.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Pink.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Purple,
-                word_sequence=[attribute_keyword_lookup[Colors.Purple.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Purple.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Red,
-                word_sequence=[attribute_keyword_lookup[Colors.Red.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Red.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_White,
-                word_sequence=[attribute_keyword_lookup[Colors.White.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.White.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Yellow,
-                word_sequence=[attribute_keyword_lookup[Colors.Yellow.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Yellow.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Mixture,
-                word_sequence=[attribute_keyword_lookup[Colors.Mixture.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Mixture.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.LowerBody_Color_Other,
-                word_sequence=[attribute_keyword_lookup[Colors.Other.value],
-                               attribute_keyword_lookup[Part.LowerBody.value]]
+                word_sequence=[self.keyword_lookup[Colors.Other.value],
+                               self.keyword_lookup[Part.LowerBody.value]]
             ),
             # backpack
             SimpleAttributeExtractor(
                 document=document,
                 attribute_name=AttributeName.Accessory_Backpack,
-                word_sequence=[attribute_keyword_lookup[Part.Backpack.value]]
+                word_sequence=[self.keyword_lookup[Part.Backpack.value]]
             )
         ]
