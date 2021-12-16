@@ -100,7 +100,6 @@ poetry run python -m ocr_attribute_extraction --help
 This repo is based on
 
 - [tesserocr](https://github.com/sirfz/tesserocr)
-- [NLTK](https://www.nltk.org/)
 - [Stanza](https://stanfordnlp.github.io/stanza/)
 
 Thanks to the original authors for their work!
