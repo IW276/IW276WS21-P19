@@ -63,7 +63,7 @@ class AdvancedAttributeExtractionStage(Stage):
 
                 # Parse gender attributed to persons
                 if word.upos in ['PRON', 'DET', 'AUX']:
-                    if 'Person' in word.feats:
+                    if word.feats is not None and 'Person' in word.feats:
                         if 'Gender=Masc' in word.feats:
                             gender_indicator_male += 1
                         elif 'Gender=Fem' in word.feats:
