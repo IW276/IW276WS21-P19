@@ -2,10 +2,7 @@
 
 A tool to extract specific attributes from images containing person descriptions. Intended to run on the Jetson Nano.
 
-<p align="center">
-  Screenshot / GIF <br />
-  Link to Demo Video
-</p>
+![screenshot](./img/screenshot.png)
 
 > This work was done by David Hidalgo León, Jannik Höfler, Matthias Herzog during the IW276 Autonome Systeme Labor at the Karlsruhe University of Applied Sciences (Hochschule Karlruhe - Technik und Wirtschaft) in WS 2021 / 2022.
 
